@@ -6,4 +6,3 @@ yfinance
 flask_cors
 futures
 flask_caching
-time
