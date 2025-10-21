@@ -4,9 +4,11 @@
 # But after cached, subsequent loads are super fast! ⚡️
 # app.py
 from flask import Flask, jsonify, request
+from flask_cors import CORS  # Import CORS
 import yfinance as yf
 
 app = Flask(__name__)
+CORS(app)  # This will enable CORS for all routes
 
 @app.route('/stock', methods=['GET'])
 def get_stock():
