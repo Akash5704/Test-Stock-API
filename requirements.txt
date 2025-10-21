@@ -1,0 +1,5 @@
+flask
+gunicorn  # Useful for production apps
+requests
+jsonify  # If you need it, though 'jsonify' is usually part of flask
+yfinance
