@@ -4,3 +4,6 @@ requests
 jsonify  # If you need it, though 'jsonify' is usually part of flask
 yfinance
 flask_cors
+futures
+flask_caching
+time
