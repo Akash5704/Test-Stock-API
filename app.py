@@ -64,6 +64,43 @@ def get_multiple_stocks_parallel():
 
     return jsonify(results)
 
+@app.route('/history', methods=['GET'])
+def get_stock_history():
+    """Fetch historical data for chart intervals."""
+    symbol = request.args.get('symbol')
+    interval = request.args.get('interval', '1d')  # default 1d
+    period = request.args.get('period', '1mo')     # default 1 month
+
+    if not symbol:
+        return jsonify({"error": "Please provide a stock symbol"}), 400
+
+    try:
+        stock = yf.Ticker(symbol)
+        hist = stock.history(period=period, interval=interval)
+
+        if hist.empty:
+            return jsonify({"error": f"No historical data for '{symbol}'"}), 404
+
+        data = []
+        for date, row in hist.iterrows():
+            data.append({
+                "date": date.strftime('%Y-%m-%d %H:%M:%S'),
+                "open": round(row["Open"], 2),
+                "high": round(row["High"], 2),
+                "low": round(row["Low"], 2),
+                "close": round(row["Close"], 2),
+                "volume": int(row["Volume"])
+            })
+
+        return jsonify({
+            "symbol": symbol.upper(),
+            "interval": interval,
+            "period": period,
+            "data": data
+        })
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 # ---- Home Route ----
 @app.route('/')
